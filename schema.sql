@@ -116,3 +116,5 @@ CREATE TABLE admin_users (
 );
 INSERT INTO admin_users(username,password_hash) VALUES ('albert','tendamema');
 INSERT INTO admin_users(username,password_hash) VALUES ('joseph','gvhbjn');
+INSERT INTO admin_users(username,password_hash) VALUES ('ian','$2b$10$YVbTcabcm5KtIJ8NoP6mpeDjPbpQjcuWdrWBxIDhAq486z8L6dvUK');
+INSERT INTO admin_users(username,password_hash) VALUES ('kevin','$2b$10$LiE2toFPbtYxXYbLLLgMJ.JDGv4Sp6EOnnPWPuTKNe/xiCxYxQMbK');
