@@ -54,6 +54,7 @@ app.post("/login", (req, res) => {
         return res.status(401).redirect("/login"); // redirect back to login on failed login attempt
       }
       // if the username exists - then check if the password provided in the login form matches the password hash stored in the database for that user
+      console.log("User found:", results[0]);
       const user = results[0];
       if (bcrypt.compareSync(password, user.password_hash)) {
         // use hashed passwords and a secure comparison method - bcrypt
@@ -64,6 +65,12 @@ app.post("/login", (req, res) => {
       }
     },
   );
+});
+
+// logout logic - destroy the user session and redirect to login page
+app.get("/logout", (req, res) => {
+  req.session.destroy();
+  res.status(304).redirect("/login");
 });
 // Private Routes - only accessible to authenticated users
 app.get("/dashboard", (req, res) => {
@@ -106,7 +113,34 @@ app.get("/bookings", (req, res) => {
 
 app.get("/routes", (req, res) => {
   if (req.session && req.session.user) {
-    res.render("routes-browse.ejs");
+    dbConn.query("SELECT * FROM routes", (err, results) => {
+      if (err) {
+        console.error("Database error:", err);
+        return res.status(500).send("Internal Server Error");
+      }
+      res.render("routes-browse.ejs", {
+        routes: results,
+        addSuccess: req.query.addSuccess === "true",
+      });
+    });
+  } else {
+    res.status(401).redirect("/login");
+  }
+});
+
+app.post("/add-route", (req, res) => {
+  if (req.session && req.session.user) {
+    const { origin, destination, base_price, distance_km, estimated_duration } =
+      req.body;
+    const insertQuery = ` INSERT INTO routes (origin, destination, base_price, distance_km, estimated_duration) VALUES ("${origin}", "${destination}", ${base_price}, ${distance_km}, ${estimated_duration})`;
+
+    dbConn.query(insertQuery, (err, result) => {
+      if (err) {
+        console.error("Database error:", err);
+        return res.status(500).send("Internal Server Error");
+      }
+      res.redirect("/routes?addSuccess=true"); // redirect to routes page with success message on successful route addition
+    });
   } else {
     res.status(401).redirect("/login");
   }
@@ -119,8 +153,6 @@ app.get("/payments", (req, res) => {
     res.status(401).redirect("/login");
   }
 });
-
-
 
 //start the app
 app.listen(3003, () => console.log("Server running on PORT 3003"));

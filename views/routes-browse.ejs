@@ -7,11 +7,60 @@
   <!-- Main Content -->
   <main class="dashboard-main">
     <div class="dashboard-header">
-      <h1>Available Routes</h1>
+      <div>
+        <h1>Available Routes</h1>
+        <% if(addSuccess){ %>
+          <div class="alert alert-success" style="color: green; background-color: aliceblue;">
+            Route added successfully!
+          </div>
+        <% } %>
+      </div>
+      <button class="btn btn-primary" onclick="openAddRouteModal()">+ Add New Route</button>
+    </div>
+
+    <!-- Add Route Modal -->
+    <div id="addRouteModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Add New Route</h2>
+          <button class="modal-close" onclick="closeAddRouteModal()">&times;</button>
+        </div>
+        <form action="/add-route" method="post" class="modal-form">
+          <div class="group">
+            <label for="origin">Origin</label>
+            <input type="text" id="origin" name="origin" required />
+          </div>
+
+          <div class="group">
+            <label for="destination">Destination</label>
+            <input type="text" id="destination" name="destination" required />
+          </div>
+
+          <div class="group">
+            <label for="base-price">Base Price</label>
+            <input type="number" id="base-price" name="base_price" step="0.01" required />
+          </div>
+
+          <div class="group">
+            <label for="distance">Distance (km)</label>
+            <input type="number" id="distance" name="distance_km" required />
+          </div>
+
+          <div class="group">
+            <label for="duration">Estimated Duration (hours)</label>
+            <input type="number" id="duration" name="estimated_duration" required />
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="closeAddRouteModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Add Route</button>
+          </div>
+        </form>
+      </div>
     </div>
 
     <div class="dashboard-card">
-      <h2>Browse & Book Routes</h2>
+      <h2>Browse Routes</h2>
 
       <div class="card-controls">
         <div class="search-box">
@@ -28,73 +77,36 @@
         </div>
       </div>
 
-      <div class="empty-state">
-        <div class="empty-state-icon">🗺️</div>
-        <h3>Browse Available Routes</h3>
-        <p>
-          Explore all available shuttle routes across Kenya. View departure times, arrival times,
-          fare prices, estimated travel duration, available seats, and shuttle specifications.
-          Compare routes and book your preferred trip.
-        </p>
-        <p style="color: var(--text-light); font-size: 0.95rem; margin-top: var(--spacing-md);">
-          Features coming soon: real-time seat availability, price comparison, direct booking,
-          vehicle details, driver ratings, and trip tracking.
-        </p>
+      <div class="routes-list">
+
+      <!-- origin, destination, base_price, distance_km, estimated_duration in a tables -->
+
+        <table class="routes-table">
+          <thead>
+            <tr>
+              <th>Origin</th>
+              <th>Destination</th>
+              <th>Base Price</th>
+              <th>Distance (km)</th>
+              <th>Estimated Duration (hours)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% routes.forEach(route => { %>
+              <tr>
+                <td><%= route.origin %></td>
+                <td><%= route.destination %></td>
+                <td>$<%= route.base_price %></td>
+                <td><%= route.distance_km %> km</td>
+                <td><%= route.estimated_duration %> hours</td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+
       </div>
-    </div>
 
-    <!-- Quick Route Categories -->
-    <div class="dashboard-card">
-      <h2>Popular Routes</h2>
-      <div class="item-list">
-        <div class="item-card">
-          <div class="item-info">
-            <h4>Nairobi ↔ Kisumu</h4>
-            <div class="item-details">
-              <span class="item-detail"><strong>Departure:</strong> Daily at 6:00 AM, 12:00 PM, 6:00 PM</span>
-              <span class="item-detail"><strong>Duration:</strong> ~6-7 hours</span>
-              <span class="item-detail"><strong>Fare:</strong> From KES 900</span>
-            </div>
-          </div>
-          <button class="btn btn-primary btn-sm">Book Now</button>
-        </div>
-
-        <div class="item-card">
-          <div class="item-info">
-            <h4>Nairobi ↔ Eldoret</h4>
-            <div class="item-details">
-              <span class="item-detail"><strong>Departure:</strong> Daily at 8:00 AM, 2:00 PM, 8:00 PM</span>
-              <span class="item-detail"><strong>Duration:</strong> ~4-5 hours</span>
-              <span class="item-detail"><strong>Fare:</strong> From KES 1,200</span>
-            </div>
-          </div>
-          <button class="btn btn-primary btn-sm">Book Now</button>
-        </div>
-
-        <div class="item-card">
-          <div class="item-info">
-            <h4>Eldoret ↔ Kitale</h4>
-            <div class="item-details">
-              <span class="item-detail"><strong>Departure:</strong> Daily at 9:00 AM, 3:00 PM, 9:00 PM</span>
-              <span class="item-detail"><strong>Duration:</strong> ~2-3 hours</span>
-              <span class="item-detail"><strong>Fare:</strong> From KES 600</span>
-            </div>
-          </div>
-          <button class="btn btn-primary btn-sm">Book Now</button>
-        </div>
-
-        <div class="item-card">
-          <div class="item-info">
-            <h4>Nairobi ↔ Mombasa</h4>
-            <div class="item-details">
-              <span class="item-detail"><strong>Departure:</strong> Daily at 7:00 AM, 1:00 PM, 7:00 PM</span>
-              <span class="item-detail"><strong>Duration:</strong> ~8-9 hours</span>
-              <span class="item-detail"><strong>Fare:</strong> From KES 1,500</span>
-            </div>
-          </div>
-          <button class="btn btn-primary btn-sm">Book Now</button>
-        </div>
-      </div>
+    
     </div>
   </main>
 </div>

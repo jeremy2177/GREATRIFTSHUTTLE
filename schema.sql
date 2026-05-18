@@ -11,6 +11,8 @@ CREATE TABLE routes (
     estimated_duration TIME
 );
 
+alter table routes modify column estimated_duration int; 
+
 CREATE TABLE vehicles (
     number_plate VARCHAR(20) PRIMARY KEY,
     model VARCHAR(50),
