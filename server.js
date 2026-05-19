@@ -146,6 +146,81 @@ app.post("/add-route", (req, res) => {
   }
 });
 
+app.get("/drivers", (req, res) => {
+  if (req.session && req.session.user) {
+    dbConn.query("SELECT * FROM drivers", (err, results) => {
+      if (err) {
+        console.error("Database error:", err);
+        return res.status(500).send("Internal Server Error");
+      }
+      res.render("manage-drivers.ejs", {
+        drivers: results,
+        addSuccess: req.query.addSuccess === "true",
+      });
+    });
+  } else {
+    res.status(401).redirect("/login");
+  }
+});
+
+app.post("/add-driver", (req, res) => {
+  if (req.session && req.session.user) {
+    const {
+      first_name,
+      last_name,
+      id_number,
+      phone_number,
+      license_number,
+      license_expiry_date,
+    } = req.body;
+    const insertQuery = `INSERT INTO drivers (first_name, last_name, id_number, phone_number, license_number, license_expiry_date) VALUES ("${first_name}", "${last_name}", "${id_number}", "${phone_number}", "${license_number}", "${license_expiry_date}")`;
+
+    dbConn.query(insertQuery, (err, result) => {
+      if (err) {
+        console.error("Database error:", err);
+        return res.status(500).send("Internal Server Error");
+      }
+      res.redirect("/drivers?addSuccess=true");
+    });
+  } else {
+    res.status(401).redirect("/login");
+  }
+});
+
+app.get("/vehicles", (req, res) => {
+  if (req.session && req.session.user) {
+    dbConn.query("SELECT * FROM vehicles", (err, results) => {
+      if (err) {
+        console.error("Database error:", err);
+        return res.status(500).send("Internal Server Error");
+      }
+      res.render("manage-vehicles.ejs", {
+        vehicles: results,
+        addSuccess: req.query.addSuccess === "true",
+      });
+    });
+  } else {
+    res.status(401).redirect("/login");
+  }
+});
+
+app.post("/add-vehicle", (req, res) => {
+  if (req.session && req.session.user) {
+    const { number_plate, model, color, capacity, status } = req.body;
+    const insertQuery = `INSERT INTO vehicles (number_plate, model, color, capacity, status) VALUES ("${number_plate}", "${model}", "${color}", ${capacity}, "${status}")`;
+
+    dbConn.query(insertQuery, (err, result) => {
+      if (err) {
+        console.error("Database error:", err);
+        return res.status(500).send("Internal Server Error");
+      }
+      res.redirect("/vehicles?addSuccess=true");
+    });
+  } else {
+    res.status(401).redirect("/login");
+  }
+});
+
 app.get("/payments", (req, res) => {
   if (req.session && req.session.user) {
     res.render("payments-manage.ejs");

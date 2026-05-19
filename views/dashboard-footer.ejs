@@ -13,10 +13,47 @@
       }
     }
 
+    function openAddDriverModal() {
+      const modal = document.getElementById('addDriverModal');
+      if (modal) {
+        modal.classList.add('show');
+      }
+    }
+
+    function closeAddDriverModal() {
+      const modal = document.getElementById('addDriverModal');
+      if (modal) {
+        modal.classList.remove('show');
+      }
+    }
+
+    function openAddVehicleModal() {
+      const modal = document.getElementById('addVehicleModal');
+      if (modal) {
+        modal.classList.add('show');
+      }
+    }
+
+    function closeAddVehicleModal() {
+      const modal = document.getElementById('addVehicleModal');
+      if (modal) {
+        modal.classList.remove('show');
+      }
+    }
+
     window.addEventListener('click', (event) => {
-      const modal = document.getElementById('addRouteModal');
-      if (modal && event.target === modal) {
+      const routeModal = document.getElementById('addRouteModal');
+      const driverModal = document.getElementById('addDriverModal');
+      const vehicleModal = document.getElementById('addVehicleModal');
+
+      if (routeModal && event.target === routeModal) {
         closeAddRouteModal();
+      }
+      if (driverModal && event.target === driverModal) {
+        closeAddDriverModal();
+      }
+      if (vehicleModal && event.target === vehicleModal) {
+        closeAddVehicleModal();
       }
     });
   </script>
