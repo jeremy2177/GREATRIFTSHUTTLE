@@ -63,6 +63,31 @@
       </div>
     </div>
 
+    <!-- Change Vehicle Status Modal -->
+    <div id="changeVehicleStatusModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Change Vehicle Status</h2>
+          <button class="modal-close" onclick="closeChangeVehicleStatusModal()">&times;</button>
+        </div>
+        <div style="padding: var(--spacing-md);">
+          <p style="margin-bottom: var(--spacing-md); color: var(--text-color);"><strong>Vehicle:</strong> <span id="vehicleInfo"></span></p>
+          <div class="group">
+            <label for="vehicle-new-status">New Status</label>
+            <select id="vehicle-new-status" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); font-size: 0.95rem;">
+              <option value="active">Active</option>
+              <option value="maintenance">Maintenance</option>
+              <option value="retired">Retired</option>
+            </select>
+          </div>
+          <div class="modal-footer" style="padding-top: var(--spacing-md);">
+            <button type="button" class="btn btn-secondary" onclick="closeChangeVehicleStatusModal()">Cancel</button>
+            <button type="button" class="btn btn-primary" onclick="submitVehicleStatusChange()">Update Status</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="dashboard-card">
       <h2>Vehicles List</h2>
 
@@ -89,6 +114,7 @@
               <th>Color</th>
               <th>Capacity</th>
               <th>Status</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -99,6 +125,7 @@
                 <td><%= vehicle.color %></td>
                 <td><%= vehicle.capacity %> seats</td>
                 <td><span class="badge badge-<%= vehicle.status === 'active' ? 'success' : vehicle.status === 'maintenance' ? 'warning' : 'danger' %>"><%= vehicle.status %></span></td>
+                <td><button class="btn btn-sm btn-secondary" onclick="openChangeVehicleStatusModal('<%= vehicle.number_plate %>', '<%= vehicle.model %>', '<%= vehicle.status %>')">Change Status</button></td>
               </tr>
             <% }) %>
           </tbody>

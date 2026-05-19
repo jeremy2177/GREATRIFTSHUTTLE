@@ -64,6 +64,32 @@
       </div>
     </div>
 
+    <!-- Change Driver Status Modal -->
+    <div id="changeDriverStatusModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Change Driver Status</h2>
+          <button class="modal-close" onclick="closeChangeDriverStatusModal()">&times;</button>
+        </div>
+        <div style="padding: var(--spacing-md);">
+          <p style="margin-bottom: var(--spacing-md); color: var(--text-color);"><strong>Driver:</strong> <span id="driverName"></span></p>
+          <div class="group">
+            <label for="new-status">New Status</label>
+            <select id="new-status" style="width: 100%; padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--border-radius); font-size: 0.95rem;">
+              <option value="active">Active</option>
+              <option value="on_leave">On Leave</option>
+              <option value="suspended">Suspended</option>
+              <option value="terminated">Terminated</option>
+            </select>
+          </div>
+          <div class="modal-footer" style="padding-top: var(--spacing-md);">
+            <button type="button" class="btn btn-secondary" onclick="closeChangeDriverStatusModal()">Cancel</button>
+            <button type="button" class="btn btn-primary" onclick="submitDriverStatusChange()">Update Status</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="dashboard-card">
       <h2>Drivers List</h2>
 
@@ -95,6 +121,7 @@
               <th>Status</th>
               <th>Rating</th>
               <th>Date Joined</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -109,6 +136,7 @@
                 <td><span class="badge badge-<%= driver.status === 'active' ? 'success' : driver.status === 'on_leave' ? 'warning' : 'danger' %>"><%= driver.status %></span></td>
                 <td><%= driver.rating_cache %>/5.0</td>
                 <td><%= driver.date_joined %></td>
+                <td><button class="btn btn-sm btn-secondary" onclick="openChangeDriverStatusModal(<%= driver.driver_id %>, '<%= driver.first_name %> <%= driver.last_name %>', '<%= driver.status %>')">Change Status</button></td>
               </tr>
             <% }) %>
           </tbody>

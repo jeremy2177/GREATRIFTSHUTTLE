@@ -221,6 +221,40 @@ app.post("/add-vehicle", (req, res) => {
   }
 });
 
+app.get("/update-driver-status", (req, res) => {
+  if (req.session && req.session.user) {
+    const { driverId, status } = req.query;
+    const updateQuery = `UPDATE drivers SET status = "${status}" WHERE driver_id = ${driverId}`;
+
+    dbConn.query(updateQuery, (err, result) => {
+      if (err) {
+        console.error("Database error:", err);
+        return res.status(500).send("Internal Server Error");
+      }
+      res.redirect("/drivers");
+    });
+  } else {
+    res.status(401).redirect("/login");
+  }
+});
+
+app.get("/update-vehicle-status", (req, res) => {
+  if (req.session && req.session.user) {
+    const { numberPlate, status } = req.query;
+    const updateQuery = `UPDATE vehicles SET status = "${status}" WHERE number_plate = "${numberPlate}"`;
+
+    dbConn.query(updateQuery, (err, result) => {
+      if (err) {
+        console.error("Database error:", err);
+        return res.status(500).send("Internal Server Error");
+      }
+      res.redirect("/vehicles");
+    });
+  } else {
+    res.status(401).redirect("/login");
+  }
+});
+
 app.get("/payments", (req, res) => {
   if (req.session && req.session.user) {
     res.render("payments-manage.ejs");
