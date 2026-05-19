@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const path = require("path");
 const app = express();
 const mysql = require("mysql2");
+const { formatDate } = require("./utility");
 const dbConn = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -156,6 +157,7 @@ app.get("/drivers", (req, res) => {
       res.render("manage-drivers.ejs", {
         drivers: results,
         addSuccess: req.query.addSuccess === "true",
+        formatDate: formatDate,
       });
     });
   } else {

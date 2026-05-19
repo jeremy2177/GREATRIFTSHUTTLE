@@ -92,11 +92,11 @@
             </tr>
           </thead>
           <tbody>
-            <% routes.forEach(route => { %>
+            <% routes.reverse().forEach(route => { %>
               <tr>
                 <td><%= route.origin %></td>
                 <td><%= route.destination %></td>
-                <td>$<%= route.base_price %></td>
+                <td>KES. <%= route.base_price %></td>
                 <td><%= route.distance_km %> km</td>
                 <td><%= route.estimated_duration %> hours</td>
               </tr>

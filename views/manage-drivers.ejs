@@ -132,10 +132,10 @@
                 <td><%= driver.id_number %></td>
                 <td><%= driver.phone_number %></td>
                 <td><%= driver.license_number %></td>
-                <td><%= driver.license_expiry_date %></td>
+                <td><%= formatDate(driver.license_expiry_date) %></td>
                 <td><span class="badge badge-<%= driver.status === 'active' ? 'success' : driver.status === 'on_leave' ? 'warning' : 'danger' %>"><%= driver.status %></span></td>
                 <td><%= driver.rating_cache %>/5.0</td>
-                <td><%= driver.date_joined %></td>
+                <td><%= formatDate(driver.date_joined) %></td>
                 <td><button class="btn btn-sm btn-secondary" onclick="openChangeDriverStatusModal(<%= driver.driver_id %>, '<%= driver.first_name %> <%= driver.last_name %>', '<%= driver.status %>')">Change Status</button></td>
               </tr>
             <% }) %>
