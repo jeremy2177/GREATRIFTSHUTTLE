@@ -166,6 +166,7 @@ app.post("/add-route", (req, res) => {
   if (req.session && req.session.user) {
     const { origin, destination, base_price, distance_km, estimated_duration } =
       req.body;
+
     const insertQuery = ` INSERT INTO routes (origin, destination, base_price, distance_km, estimated_duration) VALUES ("${origin}", "${destination}", ${base_price}, ${distance_km}, ${estimated_duration})`;
 
     dbConn.query(insertQuery, (err, result) => {
