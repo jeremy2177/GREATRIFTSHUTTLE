@@ -27,7 +27,13 @@ app.use((req, res, next) => {
   next();
 });
 app.get("/", (req, res) => {
-  res.render("index.ejs");
+  dbConn.query("SELECT * FROM routes", (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).send("Internal Server Error");
+    }
+    res.render("index.ejs", { routes: results });
+  });
 });
 app.get("/about", (req, res) => {
   res.render("about.ejs");
@@ -349,6 +355,28 @@ app.get("/payments", (req, res) => {
   } else {
     res.status(401).redirect("/login");
   }
+});
+
+app.get("/all-trips", (req, res) => {
+  let getAllTrips =
+    "SELECT trip_id, driver_id,number_plate,departure_time,status,origin,destination FROM trips JOIN routes ON trips.route_id = routes.route_id";
+
+  if (req.query.route && req.query.date) {
+    getAllTrips += ` WHERE trips.route_id = ${req.query.route} AND DATE(departure_time) >= "${req.query.date}"`;
+  } else if (req.query.route) {
+    getAllTrips += ` WHERE trips.route_id = ${req.query.route}`;
+  } else if (req.query.date) {
+    getAllTrips += ` WHERE DATE(departure_time) >= "${req.query.date}"`;
+  }
+  console.log(getAllTrips);
+
+  dbConn.query(getAllTrips, (err, tripResults) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).send("Internal Server Error");
+    }
+    res.render("trips.ejs", { trips: tripResults, formatDate: formatDate });
+  });
 });
 
 //start the app
