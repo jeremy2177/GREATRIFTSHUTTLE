@@ -1,0 +1,43 @@
+<% const title = 'All Available trips'; %> 
+<%- include('header') %>
+
+    <section class="container mt-5">
+        <h1>All Available Trips</h1>
+         <% if(trips.length == 0) {  %> 
+            <p>No trips available for the selected criteria - route and date.</p>
+        <% } else { %>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Trip ID</th>
+                    <th>Route</th>
+                    <th>Departure Time</th>
+                    <th>Driver</th>
+                    <th>Number plate</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <% trips.forEach(trip => { %>
+                    <tr>
+                        <td><%= trip.trip_id %></td>
+                        <td><%= trip.origin %> to <%= trip.destination %></td>
+                        <td><%= new Date(trip.departure_time).toLocaleString() %></td>
+                        <td><%= trip.driver_id %></td>
+                        <td><%= trip.number_plate %></td>
+                        <td><%= trip.status %></td>
+                        <td>
+                        <% if(trip.status == "scheduled") { %>
+                            <button class="btn btn-success">Book Now</button>
+                        <% } %>
+                        </td>
+                    </tr>
+                <% }) %>
+                </tbody>
+
+            </table>
+        <% } %> 
+    </section>
+
+<%- include('footer') %>

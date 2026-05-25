@@ -36,41 +36,27 @@
     <section class="booking-widget" id="booking">
         <div class="container">
             <h2>Book Your Journey in Minutes</h2>
-            <div class="booking-form">
+            <form class="booking-form" action="/all-trips" method="GET">
                 <div class="form-group">
-                    <label for="from">From</label>
-                    <select id="from" required>
-                        <option value="">Select departure town</option>
-                        <option value="nairobi">Nairobi</option>
-                        <option value="eldoret">Eldoret</option>
-                        <option value="kitale">Kitale</option>
-                        <option value="bungoma">Bungoma</option>
-                        <option value="nakuru">Nakuru</option>
-                        <option value="naivasha">Naivasha</option>
+                    <label for="route">Route</label>
+                    <select id="route" name="route" required>
+                        <option value="">Select Route</option>
+                        <% routes.forEach(route=>{ %>
+                            <option value="<%= route.route_id %>"><%= route.origin %> to <%= route.destination %> : KSH. <%=route.base_price%></option>
+                        <% }) %>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="to">To</label>
-                    <select id="to" required>
-                        <option value="">Select destination</option>
-                        <option value="nairobi">Nairobi</option>
-                        <option value="eldoret">Eldoret</option>
-                        <option value="kitale">Kitale</option>
-                        <option value="bungoma">Bungoma</option>
-                        <option value="nakuru">Nakuru</option>
-                        <option value="naivasha">Naivasha</option>
-                    </select>
-                </div>
+               
                 <div class="form-group">
                     <label for="date">Travel Date</label>
-                    <input type="date" id="date" required />
+                    <input type="date" id="date" name="date" required />
                 </div>
                 <div class="form-group">
                     <label for="passengers">Passengers</label>
-                    <input type="number" id="passengers" min="1" max="11" value="1" required />
+                    <input type="number" name="count" id="passengers" min="1" max="11" value="1" required />
                 </div>
-                <button class="btn btn-primary btn-lg" style="width: 100%; margin-top: auto;">Check Availability</button>
-            </div>
+                <button type="submit" class="btn btn-primary btn-lg" style="width: 100%; margin-top: auto;">Check Availability</button>
+            </form>
             <p class="booking-note"><a href="#parcel-service">Not traveling? Send a parcel instead →</a></p>
         </div>
     </section>
@@ -449,14 +435,6 @@
     </section>
 
 
-    <script>
-        const bookingForm = document.querySelector('.booking-form');
-        if (bookingForm) {
-            bookingForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                alert('Thank you for booking! Proceed to payment details.');
-            });
-        }
-    </script>
+   
 
 <%- include('footer') %>
